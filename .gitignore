@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+
+# Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
