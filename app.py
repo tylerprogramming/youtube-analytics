@@ -69,7 +69,9 @@ def parse_duration(duration_string):
 def index():
     return 'Hello, World!'
 
-@app.route('/api/channel_data', methods=['GET', 'POST', 'OPTIONS'])
+# OPTIONS is left to Flask's automatic handler so a CORS preflight does not
+# run the view (and spend YouTube API quota); flask-cors adds the headers.
+@app.route('/api/channel_data', methods=['GET', 'POST'])
 def get_channel_data():
     try:
         youtube = get_youtube_service()
