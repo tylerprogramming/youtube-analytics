@@ -1,0 +1,5 @@
+# Python API server (app.py). Install with: pip install -r requirements.txt
+flask>=3.1,<4
+flask-cors>=6.0,<7
+google-api-python-client>=2.150,<3
+isodate>=0.7,<1
