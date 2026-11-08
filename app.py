@@ -1,29 +1,30 @@
 from flask import Flask, jsonify, request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from flask_cors import CORS, cross_origin  # Add this import
+from flask_cors import CORS
 from datetime import timedelta
 import isodate
 import os
 
+# Origin of the Next.js dashboard (youtube-data runs on port 3005).
+FRONTEND_ORIGIN = os.getenv('FRONTEND_ORIGIN', 'http://localhost:3005')
+
 app = Flask(__name__)
 CORS(app, resources={
     r"/api/*": {
-        "origins": "http://localhost:3005", 
-        "methods": ["GET", "POST"], 
-        "allow_headers": ["Content-Type"]
+        "origins": FRONTEND_ORIGIN,
+        "methods": ["GET", "POST"],
+        "allow_headers": ["Content-Type"],
+        # The dashboard fetches with credentials: 'include'.
+        "supports_credentials": True,
     }
 })
-
-# CORS(app)
 
 # Your API key
 API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 # Your channel ID
 CHANNEL_ID = os.getenv('YOUTUBE_CHANNEL_ID')
-
-app = Flask(__name__)
 
 def get_youtube_service():
     return build('youtube', 'v3', developerKey=API_KEY)
@@ -69,7 +70,6 @@ def index():
     return 'Hello, World!'
 
 @app.route('/api/channel_data', methods=['GET', 'POST', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
 def get_channel_data():
     try:
         youtube = get_youtube_service()
